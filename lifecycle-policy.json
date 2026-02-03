@@ -1,0 +1,78 @@
+{
+    "rules": [
+        {
+            "action": {
+                "type": "expire"
+            },
+            "selection": {
+                "countType": "imageCountMoreThan",
+                "countNumber": 100,
+                "tagStatus": "tagged",
+                "tagPrefixList": [
+                    "master"
+                ]
+            },
+            "description": "Clean up master containers",
+            "rulePriority": 10
+        },
+        {
+            "action": {
+                "type": "expire"
+            },
+            "selection": {
+                "countType": "imageCountMoreThan",
+                "countNumber": 100,
+                "tagStatus": "tagged",
+                "tagPrefixList": [
+                    "main"
+                ]
+            },
+            "description": "Clean up main containers",
+            "rulePriority": 20
+        },
+        {
+            "action": {
+                "type": "expire"
+            },
+            "selection": {
+                "countType": "imageCountMoreThan",
+                "countNumber": 10,
+                "tagStatus": "tagged",
+                "tagPrefixList": [
+                    "develop"
+                ]
+            },
+            "description": "Clean up develop containers",
+            "rulePriority": 30
+        },
+        {
+            "action": {
+                "type": "expire"
+            },
+            "selection": {
+                "countType": "sinceImagePushed",
+                "countUnit": "days",
+                "countNumber": 10,
+                "tagStatus": "tagged",
+                "tagPrefixList": [
+                    "pr-"
+                ]
+            },
+            "description": "Clean up pr containers",
+            "rulePriority": 40
+        },
+        {
+            "rulePriority": 50,
+            "description": "Clean up untagged containers",
+            "selection": {
+                "tagStatus": "untagged",
+                "countType": "sinceImagePushed",
+                "countUnit": "days",
+                "countNumber": 7
+            },
+            "action": {
+                "type": "expire"
+            }
+        }
+    ]
+}
