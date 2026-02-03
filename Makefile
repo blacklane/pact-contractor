@@ -35,7 +35,7 @@ docker-login:
 ## docker-build: Build Docker image. Usage: make docker-build [TAG=branch-name]
 docker-build:
 	@echo "Building Docker image: $(IMAGE_NAME):$(TAG)"
-	docker build -t $(IMAGE_NAME):$(TAG) -f Dockerfile .
+	docker build --platform=linux/amd64 -t $(IMAGE_NAME):$(TAG) -f Dockerfile .
 
 ## docker-tag: Tag Docker image for ECR. Usage: make docker-tag [TAG=branch-name]
 docker-tag:
