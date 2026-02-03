@@ -5,7 +5,7 @@ MAKEFLAGS += --silent
 ECR_REGISTRY=721041513556.dkr.ecr.eu-central-1.amazonaws.com
 ECR_REGION=eu-central-1
 IMAGE_NAME=$(PROJECTNAME)
-TAG?=$(shell git rev-parse --abbrev-ref HEAD)
+TAG?=$(shell date +%Y%m%d%H%M%S)
 AWS_PROFILE?=production
 
 ## build: Builds the project binary `bin/pact-contractor`
