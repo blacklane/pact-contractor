@@ -36,9 +36,8 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
 # Copy our static executable
-COPY --from=builder /go/bin/pact-contractor /go/bin/pact-contractor
+COPY --from=builder /go/bin/pact-contractor /bin/pact-contractor
 # Use an unprivileged user.
 USER appuser:appuser
-WORKDIR /go/bin
 # Run the pact-contractor binary.
-ENTRYPOINT ["/go/bin/pact-contractor"]
+ENTRYPOINT ["/bin/pact-contractor"]
