@@ -8,6 +8,9 @@ IMAGE_NAME=$(PROJECTNAME)
 TAG?=$(shell date +%Y%m%d%H%M%S)
 AWS_PROFILE?=production
 
+# Evaluate TAG once at the beginning
+override TAG:=$(TAG)
+
 ## build: Builds the project binary `bin/pact-contractor`
 build:
 	go build -o bin/$(PROJECTNAME) main.go
