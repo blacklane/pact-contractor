@@ -16,6 +16,14 @@ build:
 run:
 	go run main.go $(cmd)
 
+## docker-create-repo: Create ECR repository if it doesn't exist. Usage: make docker-create-repo [AWS_PROFILE=production]
+docker-create-repo:
+	@echo "Creating ECR repository if it doesn't exist..."
+	@AWS_PROFILE=$(AWS_PROFILE) aws ecr describe-repositories --region $(ECR_REGION) --repository-names $(IMAGE_NAME) 2>/dev/null || \
+	AWS_PROFILE=$(AWS_PROFILE) aws ecr create-repository --region $(ECR_REGION) --repository-name $(IMAGE_NAME) \
+		--image-scanning-configuration scanOnPush=true \
+		--tags Key=Application,Value=$(IMAGE_NAME) Key=Team,Value=Platform
+
 ## docker-login: Authenticate with AWS ECR. Usage: make docker-login [AWS_PROFILE=production]
 docker-login:
 	@echo "Authenticating with ECR..."
@@ -37,7 +45,7 @@ docker-push:
 	docker push $(ECR_REGISTRY)/$(IMAGE_NAME):$(TAG)
 
 ## docker-all: Build, tag and push Docker image to ECR. Usage: make docker-all [TAG=branch-name] [AWS_PROFILE=production]
-docker-all: docker-login docker-build docker-tag docker-push
+docker-all: docker-create-repo docker-login docker-build docker-tag docker-push
 	@echo "✅ Docker image successfully pushed to ECR: $(ECR_REGISTRY)/$(IMAGE_NAME):$(TAG)"
 
 ## release: Releases new version of the binary and submits to GitHub. Remember to have the GITHUB_TOKEN env var present. Provide VERSION to set the released version. E.g. make release VERSION=v0.1.1
